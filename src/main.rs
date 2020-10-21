@@ -1,7 +1,6 @@
 #[allow(dead_code)]
 mod error;
-mod resource;
-use resource::ResourceManager;
+mod reconcile;
 
 #[macro_use]
 extern crate tracing;
@@ -14,7 +13,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>
 
   let client = kube::Client::try_default().await.expect("create client");
 
-  let (_manager, drainer) = ResourceManager::new(client, "payments").await;
+  let (_manager, drainer) = reconcile::Manager::new(client, "payments").await;
 
   tokio::select! {
     _ = drainer => tracing::warn!("controller drained")

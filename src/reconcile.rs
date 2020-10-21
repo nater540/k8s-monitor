@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::sync::Arc;
 use chrono::prelude::*;
 use serde::{Serialize};
@@ -6,7 +8,7 @@ use futures::{future::BoxFuture, FutureExt, StreamExt};
 use kube_runtime::controller::{Context, Controller, ReconcilerAction};
 
 use k8s_openapi::api::{
-  core::v1::Pod,
+  // core::v1::Pod,
   batch::v1::Job
 };
 use kube::api::{Api, Meta, ListParams};
@@ -55,11 +57,11 @@ fn error_policy(error: &Error, _ctx: Context<ResourceContext>) -> ReconcilerActi
   }
 }
 
-pub struct ResourceManager {
+pub struct Manager {
   state: Arc<RwLock<ResourceState>>
 }
 
-impl ResourceManager {
+impl Manager {
   pub async fn new(client: kube::Client, namespace: &str) -> (Self, BoxFuture<'static, ()>) {
     let state = ResourceState::new();
 
