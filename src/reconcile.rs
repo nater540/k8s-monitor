@@ -39,11 +39,11 @@ async fn reconcile(job: Job, ctx: Context<ResourceContext>) -> Result<Reconciler
 
   let job_name  = Meta::name(&job);
   let namespace = Meta::namespace(&job).expect("job should be namespaced");
-  debug!("Reconcile Job {} in namespace {}", job_name, namespace);
+  info!("Reconcile Job {}/{}", namespace, job_name);
 
   let status = job.status.as_ref().unwrap();
 
-  info!("Reconcile Job {} : {:?}", job_name, status);
+  debug!("{:?} : {:?}", job, status);
 
   Ok(ReconcilerAction {
     requeue_after: Some(Duration::from_secs(60))
